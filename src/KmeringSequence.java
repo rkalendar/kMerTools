@@ -1,5 +1,3 @@
-
-
 import java.util.HashMap;
 
 public class KmeringSequence {
@@ -19,16 +17,6 @@ public class KmeringSequence {
 
     private HashMap<String, Integer> Masking(String seq, int kmer) {
         byte[] dx2 = new byte[128];
-        dx2[97] = 0;   //a =0
-        dx2[101] = 0;  //a  
-        dx2[108] = 1;  //t = 1            
-        dx2[116] = 1;  //t 
-        dx2[117] = 1;  //u  
-        dx2[99] = 2;   //c = 2
-        dx2[102] = 2;  //c  
-        dx2[103] = 3;  //g = 3
-        dx2[105] = 3;  //g 
-        dx2[106] = 3;  //g    
         dx2[119] = 4;  //at  
         dx2[98] = 4;   //tgc   
         dx2[104] = 4;  //atc   
