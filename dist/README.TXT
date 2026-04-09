@@ -11,4 +11,4 @@ JAR files manifest file (MANIFEST.MF).
 To run the project from the command line, go to the dist folder and
 type the following:
 
-java -jar -Xms8g -Xmx32g C:\KmersTool\dist\KmersTool.jar C:\KmersTool\test\NC_060925.1.fasta 18 C:\KmersTool\test\NC_060925.1.out
+java -jar -Xms8g -Xmx32g \KmersTool\dist\KmersTool.jar \KmersTool\test\NC_060925.1.fasta 18 \KmersTool\test\NC_060925.1.out
