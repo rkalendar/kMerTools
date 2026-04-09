@@ -76,7 +76,8 @@ java -cp . kmers.kmers <input_file> <kmer_size> <output_file>
 ### Example
 
 ```bash
-java -cp . kmers.kmers genome.fasta 11 result.tsv
+java -jar -Xms8g -Xmx32g  kmers.kmers genome.fasta 11 result.tsv
+
 ```
 
 Output (`result.tsv`):
