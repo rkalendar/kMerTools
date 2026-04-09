@@ -8,6 +8,13 @@ The tool extracts all k-mers of a given length from a DNA sequence, counts their
 
 Results are saved as a tab-separated file sorted by frequency in descending order.
 
+## Author & Contact
+
+**Ruslan Kalendar**
+📧 ruslan.kalendar@helsinki.fi
+
+---
+
 ## Features
 
 - **FASTA and plain-text input** — supports standard `.fasta` / `.fa` files (header lines starting with `>` are skipped) as well as raw text files containing only the sequence
@@ -83,5 +90,10 @@ Results saved to: result.tsv
 5. The final map is sorted by frequency and written to a TSV file.
 
 
+## License
+
+This project is distributed under the terms of the [GNU General Public License v3.0](LICENSE.txt).
+
+---
 
 MIT
