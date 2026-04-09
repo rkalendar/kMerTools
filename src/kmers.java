@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
  *
  * Usage: java KmersTool <input_file> <kmer_size> <output_file>
  *
- * Example: java KmersTool sequence.fasta 5 result.tsv
+ * Example: java -jar KmersTool.jar sequence.fasta 5 result.tsv
  *
  * Input : FASTA or plain-text file with a DNA sequence (ACGT). Output : TSV
  * file with columns: kmer \t count sorted by count descending.
@@ -19,7 +19,7 @@ public class kmers {
 
         // ---------- parse arguments ----------
         if (args.length < 3) {
-            System.out.println("Usage: java kmers.kmers <input_file> <kmer_size> <output_file>");
+            System.out.println("Usage: java -jar KmersTool.jar <input_file> <kmer_size> <output_file>");
             System.out.println("  input_file  - FASTA or plain text file with DNA sequence");
             System.out.println("  kmer_size   - length of k-mer (e.g. 3, 5, 11, 21)");
             System.out.println("  output_file - path for the result TSV file");
