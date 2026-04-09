@@ -76,7 +76,7 @@ java -cp . kmers.kmers <input_file> <kmer_size> <output_file>
 ### Example
 
 ```bash
-java -jar -Xms8g -Xmx32g \KmersTool\dist\KmersTool.jar \KmersTool\test\NC_060925.1.fasta 18 \KmersTool\test\NC_060925.1.out
+java -jar -Xms8g -Xmx32g \KmersTool\dist\KmersTool.jar \KmersTool\test\NC_060925.1.fasta 18 \KmersTool\test\result.tsv
 
 ```
 
