@@ -27,7 +27,7 @@ kmers/
 
 ## Requirements
 
-- **Java 11+** (tested with OpenJDK 21)
+- **Java 25+** (tested with OpenJDK 25)
 
 ## Build
 
