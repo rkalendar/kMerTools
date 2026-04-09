@@ -62,7 +62,7 @@ javac kmers/*.java
 ## Usage
 
 ```bash
-java -cp . kmers.kmers <input_file> <kmer_size> <output_file>
+java -jar -Xms8g -Xmx32g KmersTool.jar <input_file> <kmer_size> <output_file>
 ```
 
 | Argument      | Description                                      |
