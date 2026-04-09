@@ -36,8 +36,7 @@ Results are saved as a tab-separated file sorted by frequency in descending orde
 kmers/
 ├── kmers.java              # Entry point — CLI argument parsing, file I/O
 ├── MaskingSequence.java    # Sliding-window k-mer extraction and counting
-├── dna.java                # Sequence normalization, reverse complement, LC%, YR%
-└── tables.java             # Byte lookup table (A=0, C=1, G=2, T=3, other=4)
+└── dna.java                # Sequence normalization, reverse complement, LC%, YR%
 ```
 
 ### Key classes
@@ -49,7 +48,6 @@ kmers/
 | `dna` | `LC(String)` | Computes linguistic complexity (%) over a 4-symbol alphabet (A, C, G, T) using n-gram orders 1–4 |
 | `dna` | `iLC(String)` | Computes binary linguistic complexity (%) over a 2-symbol purine/pyrimidine alphabet using n-gram orders 1–7 |
 | `MaskingSequence` | `Mask(String, int)` | Counts k-mers on the forward strand and increments matches from the reverse complement |
-| `tables` | `dx2[]` | Static byte lookup: maps ASCII codes to nucleotide indices (A=0, C=1, G=2, T=3, other=4) |
 
 ## Requirements
 
