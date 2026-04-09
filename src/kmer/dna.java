@@ -1,5 +1,3 @@
-package kmers;
-
 public class dna {
 
     public static String DNA(String source) {

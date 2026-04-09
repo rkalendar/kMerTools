@@ -1,4 +1,3 @@
-package kmers;
 
 import java.io.*;
 import java.util.*;
@@ -7,9 +6,9 @@ import java.util.stream.Collectors;
 /**
  * K-mer frequency analyzer.
  *
- * Usage: java kmers.kmers <input_file> <kmer_size> <output_file>
+ * Usage: java KmersTool <input_file> <kmer_size> <output_file>
  *
- * Example: java kmers.kmers sequence.fasta 5 result.tsv
+ * Example: java KmersTool sequence.fasta 5 result.tsv
  *
  * Input : FASTA or plain-text file with a DNA sequence (ACGT). Output : TSV
  * file with columns: kmer \t count sorted by count descending.
@@ -31,10 +30,11 @@ public class kmers {
         int kmerSize = Integer.parseInt(args[1]);
         String outputPath = args[2];
 
-        if (kmerSize < 3) {
-            System.err.println("Error: kmer size must be >= 3");
+        if (kmerSize < 4) {
+            System.err.println("Error: kmer size must be > 3");
             return;
         }
+        long startTime = System.nanoTime();
 
         // ---------- read sequence ----------
         String sequence;
@@ -49,7 +49,7 @@ public class kmers {
         System.out.println("K-mer size      : " + kmerSize);
 
         // ---------- count k-mers ----------
-        MaskingSequence ms = new MaskingSequence();
+        KmeringSequence ms = new KmeringSequence();
         HashMap<String, Integer> kmerMap = ms.Mask(sequence, kmerSize);
 
         System.out.println("Unique k-mers   : " + kmerMap.size());
@@ -59,17 +59,23 @@ public class kmers {
                 .stream()
                 .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
                 .collect(Collectors.toList());
+        long duration = (System.nanoTime() - startTime) / 1_000_000_000;
+        System.out.println("\nTotal duration: " + duration + " seconds\n");
 
         // ---------- write output ----------
+        System.out.println("File saving started...");
+        startTime = System.nanoTime();
         try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(outputPath)))) {
             pw.println("kmer\tcount\tLC%\tYR%");
             for (Map.Entry<String, Integer> entry : sorted) {
-                pw.println(entry.getKey() + "\t" + entry.getValue() + "\t" + dna.LC(entry.getKey())+ "\t" + dna.iLC(entry.getKey()));
+                pw.println(entry.getKey() + "\t" + entry.getValue() + "\t" + dna.LC(entry.getKey()) + "\t" + dna.iLC(entry.getKey()));
             }
             System.out.println("Results saved to: " + outputPath);
         } catch (IOException e) {
             System.err.println("Error writing output file: " + e.getMessage());
         }
+        duration = (System.nanoTime() - startTime) / 1_000_000_000;
+        System.out.println("Duration for saving file: " + duration + " seconds\n");
     }
 
     /**
@@ -89,6 +95,6 @@ public class kmers {
                 sb.append(line);
             }
         }
-        return sb.toString().toUpperCase();
+        return sb.toString();
     }
 }
