@@ -1,4 +1,3 @@
-
 import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -81,7 +80,7 @@ public class kmers {
     /**
      * Reads a DNA sequence from a FASTA or plain-text file. - Lines starting
      * with '>' are treated as headers and skipped. - All whitespace / newlines
-     * are stripped. - The sequence is converted to uppercase.
+     * are stripped. - The sequence is converted to LowerCase.
      */
     private static String readSequence(String path) throws IOException {
         StringBuilder sb = new StringBuilder();
@@ -95,6 +94,6 @@ public class kmers {
                 sb.append(line);
             }
         }
-        return sb.toString();
+        return sb.toString().toLowerCase();
     }
 }
