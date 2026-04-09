@@ -17,84 +17,72 @@ public class KmeringSequence {
 
     private HashMap<String, Integer> Masking(String seq, int kmer) {
         byte[] dx2 = new byte[128];
-        dx2[119] = 4;  //at  
-        dx2[98] = 4;   //tgc   
-        dx2[104] = 4;  //atc   
-        dx2[121] = 4;  //tc        
-        dx2[109] = 4;  //ac
-        dx2[115] = 4;  //gc       
-        dx2[107] = 4;  //gt   
-        dx2[114] = 4;  //ag         
-        dx2[118] = 4;  //agc   
-        dx2[100] = 4;  //atg         
-        dx2[110] = 4;  //atgc 
+        dx2[119] = 4;
+        dx2[98] = 4;
+        dx2[104] = 4;
+        dx2[121] = 4;
+        dx2[109] = 4;
+        dx2[115] = 4;
+        dx2[107] = 4;
+        dx2[114] = 4;
+        dx2[118] = 4;
+        dx2[100] = 4;
+        dx2[110] = 4;
 
         HashMap<String, Integer> map = new HashMap<>();
-
         seq = dna.DNA(seq);
-
         int l = seq.length();
-
         if (l < kmer) {
             return map;
         }
 
-        int[] ax = new int[kmer];
-        int[] bx = new int[5];
-
         byte[] b = seq.getBytes();
-
         for (int i = 0; i < l; i++) {
             b[i] = dx2[b[i]];
         }
 
         // --- forward strand ---
+        int bad = 0;
         for (int i = 0; i < kmer - 1; i++) {
-            ax[i] = b[i];
-            bx[ax[i]]++;
+            if (b[i] == 4) {
+                bad++;
+            }
         }
         for (int i = kmer - 1; i < l; i++) {
-            ax[kmer - 1] = b[i];
-            bx[ax[kmer - 1]]++;
-            if (bx[4] == 0) { // no unknown bases in window
-                String s = seq.substring(i - kmer + 1, i + 1);
-                if (map.containsKey(s)) {
-                    map.replace(s, map.get(s) + 1);
-                } else {
-                    map.put(s, 1);
-                }
+            if (b[i] == 4) {
+                bad++;
             }
-            bx[b[i + 1 - kmer]]--;
-            for (int j = 0; j < kmer - 1; j++) {
-                ax[j] = ax[j + 1];
+            if (bad == 0) {
+                map.merge(seq.substring(i - kmer + 1, i + 1), 1, Integer::sum);
+            }
+            if (b[i - kmer + 1] == 4) {
+                bad--;
             }
         }
 
+        // --- reverse complement strand ---
         seq = dna.ComplementDNA(seq);
         b = seq.getBytes();
         for (int i = 0; i < l; i++) {
             b[i] = dx2[b[i]];
         }
 
-        // --- reverse complement strand ---
-        bx = new int[5];
+        bad = 0;
         for (int i = 0; i < kmer - 1; i++) {
-            ax[i] = b[i];
-            bx[ax[i]]++;
+            if (b[i] == 4) {
+                bad++;
+            }
         }
         for (int i = kmer - 1; i < l; i++) {
-            ax[kmer - 1] = b[i];
-            bx[ax[kmer - 1]]++;
-            if (bx[4] == 0) {
-                String s = seq.substring(i - kmer + 1, i + 1);
-                if (map.containsKey(s)) {
-                    map.replace(s, map.get(s) + 1);
-                }
-                // only count reverse-complement k-mers already seen on forward
+            if (b[i] == 4) {
+                bad++;
             }
-            bx[b[i + 1 - kmer]]--;
-            for (int j = 0; j < kmer - 1; j++) {
-                ax[j] = ax[j + 1];
+            if (bad == 0) {
+                String s = seq.substring(i - kmer + 1, i + 1);
+                map.computeIfPresent(s, (k, v) -> v + 1);
+            }
+            if (b[i - kmer + 1] == 4) {
+                bad--;
             }
         }
 
