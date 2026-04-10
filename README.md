@@ -23,6 +23,8 @@ Results are saved as a tab-separated file sorted by frequency in descending orde
 ## Features
 
 - **FASTA and plain-text input** — supports standard `.fasta` / `.fa` files (header lines starting with `>` are skipped) as well as raw text files containing only the sequence
+- **Directory input** — when a directory path is given instead of a file, every file inside is processed independently and a separate report is generated for each one
+- **Automatic output naming** — the output file argument is optional; when omitted, the output path is derived from the input file name by replacing its extension with `.out` (e.g. `seq.fasta` → `seq.out`)
 - **IUPAC nucleotide support** — the input sequence is normalized through `dna.DNA()`, which maps extended IUPAC codes (B, D, H, K, M, R, S, V, W, Y) and modified-base aliases (dA, dC, dG, dT coded as E, F, J, L) to their standard lowercase equivalents; U is treated as T
 - **Reverse complement counting** — k-mers found on the complementary strand contribute to the frequency of already observed forward-strand k-mers; complement mapping covers the full IUPAC alphabet (e.g. R↔Y, K↔M, B↔V, D↔H)
 - **Ambiguity filtering** — windows containing any non-ACGT character (e.g. N) are excluded from the k-mer count
@@ -62,20 +64,44 @@ javac kmers/*.java
 ## Usage
 
 ```bash
-java -jar -Xms8g -Xmx32g KmersTool.jar <input_file> <kmer_size> <output_file>
+java -jar -Xms8g -Xmx32g KmersTool.jar <input_file_or_dir> <kmer_size> [output_file]
 ```
 
-| Argument      | Description                                      |
-|---------------|--------------------------------------------------|
-| `input_file`  | Path to a FASTA or plain-text DNA sequence file  |
-| `kmer_size`   | Length of k-mer (≥ 3)                             |
-| `output_file` | Path for the output TSV file                     |
+| Argument           | Description                                                                                     |
+|--------------------|-------------------------------------------------------------------------------------------------|
+| `input_file_or_dir` | Path to a FASTA / plain-text DNA file, **or** a directory containing such files               |
+| `kmer_size`        | Length of k-mer (≥ 4)                                                                           |
+| `output_file`      | *(Optional)* Path for the output TSV file. When omitted, the name is derived automatically (see below) |
 
-### Example
+### Output file naming
+
+When `output_file` is not specified, the output path is generated from the input file name by replacing its extension with `.out`:
+
+| Input | Output |
+|-------|--------|
+| `sequence.fasta` | `sequence.out` |
+| `data/myseq.txt` | `data/myseq.out` |
+| `somefile` (no extension) | `somefile.out` |
+
+In **directory mode** the explicit `output_file` argument is ignored — each file always gets its own `.out` report placed next to the source file.
+
+### Examples
+
+```bash
+# Single file — explicit output path
+java -jar -Xms8g -Xmx32g KmersTool.jar sequence.fasta 18 result.tsv
+
+# Single file — output derived automatically -> sequence.out
+java -jar -Xms8g -Xmx32g KmersTool.jar sequence.fasta 18
+
+# Directory — every file inside is analyzed, each produces its own .out
+java -jar -Xms8g -Xmx32g KmersTool.jar /data/sequences/ 18
+```
+
+Full example:
 
 ```bash
 java -jar -Xms8g -Xmx32g \KmersTool\dist\KmersTool.jar \KmersTool\test\NC_060925.1.fasta 18 \KmersTool\test\result.tsv
-
 ```
 
 Output (`result.tsv`):
@@ -89,13 +115,26 @@ GATCGATCGAT	8	61	82
 ...
 ```
 
-Console:
+Console (single file):
 
 ```
 Sequence length : 80
 K-mer size      : 11
 Unique k-mers   : 24
 Results saved to: result.tsv
+```
+
+Console (directory):
+
+```
+Directory mode — 3 file(s) found in: /data/sequences/
+
+=== Processing: chr1.fasta -> chr1.out ===
+Sequence length : 248956422
+K-mer size      : 18
+Unique k-mers   : 5821044
+Results saved to: /data/sequences/chr1.out
+...
 ```
 
 ## How It Works
